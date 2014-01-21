@@ -1,0 +1,4 @@
+# gitwin
+
+- `pull` 
+- `status`
