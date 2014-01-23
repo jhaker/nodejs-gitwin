@@ -2,7 +2,7 @@
   "author": "jonathan haker",
   "name": "gitwin",
   "description": "git windows wrapper for node.js",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/jhaker/nodejs-gitwin.git"
@@ -11,8 +11,14 @@
     "url": "https://github.com/jhaker/nodejs-gitwin/issues"
   },
   "main": "gitwin.js",
-  "dependencies": { },
-  "devDependencies": { },
+  "dependencies": { 
+	"events":"*",
+	"colors":"*"
+  },
+  "devDependencies": {
+	"should":"*",
+	"mocha":"*"
+  },
   "optionalDependencies": { },
   "engines": { "node": "*" }
 }
