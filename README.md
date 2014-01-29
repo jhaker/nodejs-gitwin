@@ -1,4 +1,17 @@
-# gitwin
+# gitwin - git windows for node.js
 
-- `pull` 
-- `status`
+### example - pull
+```
+	var gitwin = require('gitwin');
+	gitwin.path = "c:/mygitrepo";
+	gitwin.pull();
+};
+```
+
+### example - status
+```
+	var gitwin = require('gitwin');
+	gitwin.path = "c:/mygitrepo";
+	gitwin.status();
+};
+```

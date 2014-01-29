@@ -2,48 +2,45 @@
 var events = require('events'),
 	colors = require('colors');
 
-var gitwin = function(path){
+var gitwin = function(){
 	events.EventEmitter.call(this);
-	this.path = path;
-	this.command = '';
+	this.path = process.cwd();
+	this.verbose	= true;
 	}
 
 gitwin.prototype.__proto__ = events.EventEmitter.prototype;
 
 gitwin.prototype.buildCommand = function(cmd) {
-		this.command = 'cd '.concat(this.path,' & git ',cmd);
+		return 'cd '.concat(this.path,' & git ',cmd);
 	}
 	
-gitwin.prototype.exec = function (eventName) {
+gitwin.prototype.execute = function (cmd) {
 	var self = this;
-	var cmd = self.command;
 	var childProcess = require('child_process'), ls;
-	ls = childProcess.exec(cmd, function (error, stdout, stderr) {		
-		self.emit('log',null,'execute command: '.concat(cmd));
+	ls = childProcess.exec(cmd, function (error, stdout, stderr) {
 		var msg = '';
 		if (error) {
 			msg = ('\nstack...\n' + error.stack).grey+('\n failed - errors'.white.redBG);
-			console.log('ERROR: '+msg);
-			self.emit(eventName,error,msg);
+			self.emit('error',error.code,msg);
+			return;
 		}
 		else{
-			self.emit(eventName,null,stdout);
+			msg = stdout.grey+('\n finished - no errors'.white.greenBG);
+			self.emit('done',null,msg);
 		}
 	});
 }
 
-gitwin.prototype.execute = function(eventName){
-		var eventName = eventName;
-		this.buildCommand(eventName);
-		this.exec(eventName);
-}
-
 gitwin.prototype.pull = function() {
-		this.execute('pull');
+		this.emit('status',null,'pull starting');
+		var cmd = this.buildCommand('pull');
+		return this.execute(cmd);
 	}
 
 gitwin.prototype.status = function() {
-		this.execute('status');
+		this.emit('status',null,'status starting');
+		var cmd = this.buildCommand('status');
+		return this.execute(cmd);
 	}
 
 gitwin.prototype.log = function (error, stdout, stderr) {
@@ -75,5 +72,17 @@ gitwin.prototype.help = function(){
 	console.log(msg);
 	console.log('\n   event example usage (log): '.grey+'\n     "gitwin_instance.on(\'log\',function(error,msg){console.log(msg);});"'.cyan);
 }
-	
-module.exports = gitwin;
+
+
+var git = new gitwin();
+git.on('error',function(error,results){  if(error){ console.log(error.redBG);}; console.log(results.cyan);});
+git.on('status',function(error,results){  if(error){ console.log(error.redBG);}; console.log(results.cyan);});
+git.on('done',function(err,results){ 
+	if(this.verbose) {
+		console.log(results);}
+		else{
+		console.log('done'.grey);
+		}
+	});
+
+module.exports = git;

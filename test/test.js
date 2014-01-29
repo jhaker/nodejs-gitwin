@@ -4,24 +4,28 @@ var mocha = require('mocha'),
 	gitwin = require('../gitwin');
 	
 	
+
+	
 describe('commands',function(){
 
 	var path = 'c:/yourapp';
-	var git = new gitwin(path);
+	gitwin.path = path;
+	
+	/* override for testing */
+	gitwin.execute = function (cmd) {
+		return cmd;
+	}
 	
 	describe('pull command',function(){
-		git.pull();
-		git.command.should.equal('cd c:/yourapp & git pull');
+		gitwin.pull().should.equal('cd c:/yourapp & git pull');
 	})
 	
 	describe('status command',function(){
-		git.status();
-		git.command.should.equal('cd c:/yourapp & git status');
+		gitwin.status().should.equal('cd c:/yourapp & git status');
 	})
 
 	describe('build command',function(){
-		git.buildCommand('');
-		git.command.should.equal('cd c:/yourapp & git ');
+		gitwin.buildCommand('').should.equal('cd c:/yourapp & git ');
 	})
 
 })
