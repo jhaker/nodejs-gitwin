@@ -2,7 +2,7 @@
   "author": "jonathan haker",
   "name": "gitwin",
   "description": "git windows wrapper for node.js",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "repository": {
     "type": "git",
     "url": "https://github.com/jhaker/nodejs-gitwin.git"
