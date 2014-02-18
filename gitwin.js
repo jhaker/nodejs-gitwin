@@ -2,6 +2,9 @@
 var events = require('events'),
 	colors = require('colors');
 
+	
+var lineBreak = '\n- - - - - - - - - - - - - - - -';
+
 var gitwin = function(){
 	events.EventEmitter.call(this);
 	this.path = process.cwd();
@@ -31,14 +34,19 @@ gitwin.prototype.execute = function (cmd) {
 	});
 }
 
+gitwin.prototype.emitStatusStart = function(action){
+	var startingMsg = (action+' starting').cyan;
+	this.emit('status',null,startingMsg);
+}	
+
 gitwin.prototype.pull = function() {
-		this.emit('status',null,'pull starting');
+		this.emitStatusStart('git pull');
 		var cmd = this.buildCommand('pull');
 		return this.execute(cmd);
 	}
 
 gitwin.prototype.status = function() {
-		this.emit('status',null,'status starting');
+		this.emitStatusStart('git status');
 		var cmd = this.buildCommand('status');
 		return this.execute(cmd);
 	}
@@ -74,15 +82,20 @@ gitwin.prototype.help = function(){
 }
 
 
-var git = new gitwin();
-git.on('error',function(error,results){  if(error){ console.log(error.redBG);}; console.log(results.cyan);});
-git.on('status',function(error,results){  if(error){ console.log(error.redBG);}; console.log(results.cyan);});
-git.on('done',function(err,results){ 
-	if(this.verbose) {
-		console.log(results);}
-		else{
-		console.log('done'.grey);
+module.exports = function(callback){
+	var _gitwin = new gitwin(callback);
+	_gitwin.on('status',function(err,results){ 
+		if(this.showHelp) return; 
+		if(err){ console.log(err.redBG);}; 
+			console.log(results);}
+		);
+	_gitwin.on('error',function(err,results){ console.log('error'.red); if(err){ console.log(err.redBG);}; console.log(results.red);});
+	_gitwin.on('done',function(err,results){ 
+		console.log(results); 
+		console.log('done'.cyan);
+		console.log(lineBreak);
+		if(typeof callback == 'function') callback();
 		}
-	});
-
-module.exports = git;
+	);
+	return _gitwin;
+};
