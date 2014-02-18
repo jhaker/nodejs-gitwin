@@ -2,16 +2,18 @@
 
 ### example - pull
 ```
-	var gitwin = require('gitwin');
-	gitwin.path = "c:/mygitrepo";
+	var _gitwin = require('gitwin');
+	var gitwin = new _gitwin(your_callback);
+	gitwin.path = "c:/your_app";
 	gitwin.pull();
 };
 ```
 
 ### example - status
 ```
-	var gitwin = require('gitwin');
-	gitwin.path = "c:/mygitrepo";
+	var _gitwin = require('gitwin');
+	var gitwin = new _gitwin(your_callback);
+	gitwin.path = "c:/your_app";
 	gitwin.status();
 };
 ```
