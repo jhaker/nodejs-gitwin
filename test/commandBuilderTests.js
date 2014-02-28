@@ -1,10 +1,9 @@
-
 var mocha = require('mocha'),
 	should = require('should'),
-	gitwin = require('../gitwin');
-	
-	
+	_gitwin = require('../gitwin');
 
+var gitwin = new _gitwin(function(){});
+	
 	
 describe('commands',function(){
 
