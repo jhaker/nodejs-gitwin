@@ -1,5 +1,22 @@
 # gitwin - git windows for node.js
 
+
+# install
+
+With [npm](https://www.npmjs.com/) do:
+
+```
+npm install gitwin
+```
+
+With [bower](https://bower.io) do:
+
+```
+bower install gitwin
+```
+
+
+
 ### example - pull
 ```
 	var _gitwin = require('gitwin');

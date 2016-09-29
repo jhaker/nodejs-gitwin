@@ -12,6 +12,7 @@ describe('commands',function(){
 	
 	/* override for testing */
 	gitwin.execute = function (cmd) {
+		console.log(cmd);
 		return cmd;
 	}
 	
