@@ -20,7 +20,8 @@ gitwin.prototype.buildCommand = function(cmd) {
 gitwin.prototype.execute = function (cmd) {
 	var self = this;
 	var childProcess = require('child_process'), ls;
-	ls = childProcess.exec(cmd, function (error, stdout, stderr) {
+	cmd = cmd.split(' ')
+	ls = childProcess.execFile(cmd[0], cmd.slice(1), function (error, stdout, stderr) {
 		var msg = '';
 		if (error) {
 			msg = ('\nstack...\n' + error.stack).grey+('\n failed - errors'.white.redBG);
